@@ -1,4 +1,8 @@
 function love.load()
+
+  require('zombies')
+  require('bullets')
+
   gameState = 1 --1 main menu --2 play
   myFont = love.graphics.newFont(40)
 
@@ -13,7 +17,6 @@ function love.load()
   player.y = love.graphics.getHeight()/2
   player.speed = 180
 
-
   zombies = {}
   bullets = {}
 
@@ -25,39 +28,10 @@ end
 function love.update(dt)
 
   playerMovement(dt)
-
-  for i,z in ipairs(zombies)
-    do
-      z.x = z.x + math.cos(zombiePlayerAngle(z)) * z.speed * dt
-      z.y = z.y + math.sin(zombiePlayerAngle(z)) * z.speed * dt
-
-      if distance(z.x, z.y, player.x, player.y) < 20
-        then
-          for i,z in ipairs(zombies)
-            do
-              zombies[i] = nil
-              gameState = 1
-              player.x = love.graphics.getWidth()/2
-              player.y = love.graphics.getHeight()/2
-            end
-        end
-    end
-
-  for i,b in ipairs(bullets)
-    do
-      b.x = b.x + math.cos(b.direction) * b.speed * dt
-      b.y = b.y + math.sin(b.direction) * b.speed * dt
-    end
-
-  for i=#bullets,1,-1
-    do
-      local b = bullets[i]
-
-      if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() or b.dead == true
-        then
-          table.remove(bullets, i)
-        end
-    end
+  zombieMovement()
+  bulletMovement()
+  bulletRemoval()
+  zombieRemoval()
 
     for i,z in ipairs(zombies)
       do
@@ -69,16 +43,6 @@ function love.update(dt)
                 b.dead = true
                 score = score + 1
               end
-          end
-      end
-
-    for i,z in ipairs(zombies)
-      do
-        local z = zombies[i]
-
-        if z.dead == true
-          then
-            table.remove(zombies, i)
           end
       end
 
@@ -143,46 +107,6 @@ function playerMovement(dt)
           player.x = player.x - player.speed * dt
         end
     end
-end
-
-function spawnZombie()
-
-  zombie = {}
-  zombie.x = 150
-  zombie.y = 150
-  zombie.speed = 130
-  zombie.dead = false
-  local side = math.random(1,4)  --1 up --2 right --3 down --4 left
-
-  if side == 1
-    then
-      zombie.x = math.random(0,love.graphics.getWidth())
-      zombie.y = -20
-  elseif side == 2
-    then
-      zombie.x = love.graphics.getWidth() + 20
-      zombie.y = math.random(0,love.graphics.getHeight())
-  elseif side == 3
-    then
-      zombie.x = math.random(0,love.graphics.getWidth())
-      zombie.y = love.graphics.getHeight() + 20
-  else
-      zombie.x = -20
-      zombie.y = math.random(0,love.graphics.getHeight())
-  end
-
-  table.insert(zombies, zombie)
-end
-
-function spawnBullet()
-  bullet = {}
-  bullet.x = player.x
-  bullet.y = player.y
-  bullet.speed = 500
-  bullet.direction = playerMouseAngle()
-  bullet.dead = false
-
-  table.insert(bullets, bullet)
 end
 
 function love.mousepressed(x, y, b, istouch)
