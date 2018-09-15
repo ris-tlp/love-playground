@@ -25,7 +25,7 @@ end
 
 function love.draw()
 
-  love.graphics.draw(sprites.player, player.x, player.y)
+  love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.2, 1.2, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
 end
 
@@ -51,4 +51,8 @@ function playerMovement(dt)
       player.x = player.x - player.speed * dt
     end
 
+end
+
+function playerMouseAngle()
+  return math.atan2(love.mouse.getY() - player.y, love.mouse.getX() - player.x)
 end
