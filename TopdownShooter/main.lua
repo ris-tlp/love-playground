@@ -5,6 +5,7 @@ function love.load()
   sprites.player = love.graphics.newImage('sprites/player.png')
   sprites.zombie = love.graphics.newImage('sprites/zombie.png')
   sprites.bullet = love.graphics.newImage('sprites/bullet.png')
+  sprites.background = love.graphics.newImage('sprites/background.png')
 
   player = {}
   player.x = love.graphics.getWidth()/2
@@ -24,7 +25,7 @@ function love.update(dt)
 end
 
 function love.draw()
-
+  love.graphics.draw(sprites.background)
   love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.2, 1.2, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
 end
