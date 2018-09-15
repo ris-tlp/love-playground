@@ -1,5 +1,6 @@
 function love.load()
-  gameState = 2 --1 main menu --2 play
+  gameState = 1 --1 main menu --2 play
+  myFont = love.graphics.newFont(40)
 
   sprites = {}
   sprites.player = love.graphics.newImage('sprites/player.png')
@@ -18,6 +19,7 @@ function love.load()
 
   maxTime = 2
   timer = maxTime
+  score = 0
 end
 
 function love.update(dt)
@@ -35,6 +37,8 @@ function love.update(dt)
             do
               zombies[i] = nil
               gameState = 1
+              player.x = love.graphics.getWidth()/2
+              player.y = love.graphics.getHeight()/2
             end
         end
     end
@@ -63,6 +67,7 @@ function love.update(dt)
               then
                 z.dead = true
                 b.dead = true
+                score = score + 1
               end
           end
       end
@@ -93,6 +98,14 @@ end
 
 function love.draw()
   love.graphics.draw(sprites.background)
+
+  if gameState == 1
+    then
+      love.graphics.setFont(myFont)
+      love.graphics.printf("Click anywhere to begin!", 0, 50, love.graphics.getWidth(), "center")
+    end
+
+  love.graphics.printf("Score: " .. score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
   love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.2, 1.2, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
   for i,z in ipairs(zombies)
@@ -108,26 +121,28 @@ end
 
 function playerMovement(dt)
 
-  if love.keyboard.isDown("s") and player.y < love.graphics.getHeight()
+  if gameState == 2
     then
-      player.y = player.y + player.speed * dt
-    end
+      if love.keyboard.isDown("s") and player.y < love.graphics.getHeight()
+        then
+          player.y = player.y + player.speed * dt
+        end
 
-  if love.keyboard.isDown("w") and player.y > 0
-    then
-      player.y = player.y - player.speed * dt
-    end
+      if love.keyboard.isDown("w") and player.y > 0
+        then
+          player.y = player.y - player.speed * dt
+        end
 
-  if love.keyboard.isDown("d") and player.x < love.graphics.getWidth()
-    then
-      player.x = player.x + player.speed * dt
-    end
+      if love.keyboard.isDown("d") and player.x < love.graphics.getWidth()
+        then
+          player.x = player.x + player.speed * dt
+        end
 
-  if love.keyboard.isDown("a") and player.x > 0
-    then
-      player.x = player.x - player.speed * dt
+      if love.keyboard.isDown("a") and player.x > 0
+        then
+          player.x = player.x - player.speed * dt
+        end
     end
-
 end
 
 function spawnZombie()
@@ -172,9 +187,17 @@ end
 
 function love.mousepressed(x, y, b, istouch)
   if b == 1 and gameState == 2
-  then
-    spawnBullet()
-  end
+    then
+      spawnBullet()
+    end
+
+  if gameState == 1
+    then
+      gameState = 2
+      maxTime = 2
+      timer = maxTime
+      score = 0
+    end
 end
 
 function playerMouseAngle()
