@@ -126,13 +126,6 @@ function zombiePlayerAngle(enemy)
   return math.atan2(player.y - enemy.y, player.x - enemy.x)
 end
 
-function love.keypressed(key, scancode, isrepeat)
-  if key == "space"
-  then
-    spawnZombie()
-  end
-end
-
 function distance(x1, y1, x2, y2)
   return math.sqrt( (x2 - x1)^2 + (y2 - y1)^2)
 end
