@@ -28,8 +28,8 @@ end
 function love.update(dt)
 
   playerMovement(dt)
-  zombieMovement()
-  bulletMovement()
+  zombieMovement(dt)
+  bulletMovement(dt)
   bulletRemoval()
   zombieRemoval()
 
@@ -46,17 +46,17 @@ function love.update(dt)
           end
       end
 
-      if gameState == 2
-        then
-          timer = timer - dt
+    if gameState == 2
+      then
+        timer = timer - dt
 
-          if timer <= 0
-            then
-              spawnZombie()
-              maxTime = maxTime * 0.95
-              timer = maxTime
-            end
-        end
+        if timer <= 0
+          then
+            spawnZombie()
+            maxTime = maxTime * 0.95
+            timer = maxTime
+          end
+      end
 
 end
 
@@ -72,15 +72,9 @@ function love.draw()
   love.graphics.printf("Score: " .. score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
   love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.2, 1.2, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
-  for i,z in ipairs(zombies)
-    do
-      love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
-    end
+  drawZombie()
+  drawBullet()
 
-  for i,b in ipairs(bullets)
-    do
-      love.graphics.draw(sprites.bullet, b.x, b.y, b.direction, 0.3, 0.3, sprites.bullet:getWidth()/3, sprites.bullet:getHeight()/3)
-    end
 end
 
 function playerMovement(dt)

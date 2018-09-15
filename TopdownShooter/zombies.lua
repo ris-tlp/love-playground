@@ -38,7 +38,7 @@ function zombieRemoval()
     end
   end
 
-function zombieMovement()
+function zombieMovement(dt)
   for i,z in ipairs(zombies)
     do
       z.x = z.x + math.cos(zombiePlayerAngle(z)) * z.speed * dt
@@ -54,5 +54,12 @@ function zombieMovement()
               player.y = love.graphics.getHeight()/2
             end
         end
+    end
+end
+
+function drawZombie()
+  for i,z in ipairs(zombies)
+    do
+      love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
     end
 end

@@ -21,10 +21,17 @@ function bulletRemoval()
     end
 end
 
-function bulletMovement()
+function bulletMovement(dt)
   for i,b in ipairs(bullets)
     do
       b.x = b.x + math.cos(b.direction) * b.speed * dt
       b.y = b.y + math.sin(b.direction) * b.speed * dt
+    end
+end
+
+function drawBullet()
+  for i,b in ipairs(bullets)
+    do
+      love.graphics.draw(sprites.bullet, b.x, b.y, b.direction, 0.3, 0.3, sprites.bullet:getWidth()/3, sprites.bullet:getHeight()/3)
     end
 end
