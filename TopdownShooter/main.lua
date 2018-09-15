@@ -32,7 +32,7 @@ end
 
 function playerMovement(dt)
 
-  if love.keyboard.isDown("s") and player.y < love.graphics.getHeight() - 50
+  if love.keyboard.isDown("s") and player.y < love.graphics.getHeight()
     then
       player.y = player.y + player.speed * dt
     end
@@ -42,7 +42,7 @@ function playerMovement(dt)
       player.y = player.y - player.speed * dt
     end
 
-  if love.keyboard.isDown("d") and player.x < love.graphics.getWidth() - 50
+  if love.keyboard.isDown("d") and player.x < love.graphics.getWidth()
     then
       player.x = player.x + player.speed * dt
     end
