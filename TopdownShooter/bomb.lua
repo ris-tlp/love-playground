@@ -3,7 +3,6 @@ function spawnBomb()
   bomb = {}
   bomb.x = player.x
   bomb.y = player.y
-  -- bomb.count = 2
   bomb.dead = false
   bomb.timer = 2
   bomb.spawn = true
