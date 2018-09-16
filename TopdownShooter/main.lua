@@ -2,6 +2,7 @@ function love.load()
 
   require('zombies')
   require('bullets')
+  require('bomb')
 
   gameState = 1 --1 main menu --2 play
   myFont = love.graphics.newFont(40)
@@ -11,6 +12,7 @@ function love.load()
   sprites.zombie = love.graphics.newImage('sprites/zombie.png')
   sprites.bullet = love.graphics.newImage('sprites/bullet.png')
   sprites.background = love.graphics.newImage('sprites/background.png')
+  sprites.bomb = love.graphics.newImage('sprites/bomb.png')
 
   player = {}
   player.x = love.graphics.getWidth()/2
@@ -19,10 +21,12 @@ function love.load()
 
   zombies = {}
   bullets = {}
+  bombs = {}
 
   maxTime = 2
   timer = maxTime
   score = 0
+  bombCount = 2
 end
 
 function love.update(dt)
@@ -32,6 +36,22 @@ function love.update(dt)
   bulletMovement(dt)
   bulletRemoval()
   zombieRemoval()
+  bombRemoval()
+
+
+    for i,b in ipairs(bombs)
+      do
+        if b.spawn == true and b.timer > 0
+          then
+            b.timer = b.timer - dt
+
+            if b.timer <= 0
+              then
+                b.dead = true
+              end
+          end
+      end
+
 
     for i,z in ipairs(zombies)
       do
@@ -70,10 +90,13 @@ function love.draw()
     end
 
   love.graphics.printf("Score: " .. score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
-  love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.2, 1.2, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
+  love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngle(), 1.4, 1.4, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
+  drawBomb()
   drawZombie()
   drawBullet()
+
+  love.graphics.print(bombCount)
 
 end
 
@@ -115,6 +138,7 @@ function love.mousepressed(x, y, b, istouch)
       maxTime = 2
       timer = maxTime
       score = 0
+      bombCount = 2
     end
 end
 
@@ -128,4 +152,12 @@ end
 
 function distance(x1, y1, x2, y2)
   return math.sqrt( (x2 - x1)^2 + (y2 - y1)^2)
+end
+
+function love.keypressed(key, scancode, isrepeat, dt)
+  if key == "z" and gameState == 2 and bombCount > 0
+    then
+      spawnBomb()
+      bombCount = bombCount - 1
+    end
 end

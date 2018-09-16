@@ -60,6 +60,6 @@ end
 function drawZombie()
   for i,z in ipairs(zombies)
     do
-      love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
+      love.graphics.draw(sprites.zombie, z.x, z.y, zombiePlayerAngle(z), 1.05, 1.05, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
     end
 end
