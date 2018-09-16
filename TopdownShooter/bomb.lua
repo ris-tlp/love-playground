@@ -6,6 +6,7 @@ function spawnBomb()
   bomb.dead = false
   bomb.timer = 2
   bomb.spawn = true
+  bomb.explosion = false
 
   table.insert(bombs, bomb)
 

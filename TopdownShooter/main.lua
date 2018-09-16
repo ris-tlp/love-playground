@@ -47,11 +47,26 @@ function love.update(dt)
 
             if b.timer <= 0
               then
-                b.dead = true
+                b.explosion = true
               end
           end
       end
 
+      for i,b in ipairs(bombs)
+      do
+        for j,z in ipairs(zombies)
+          do
+            if distance(b.x, b.y, z.x, z.y) < 50 and b.explosion == true
+              then
+                z.dead = true
+                b.dead = true
+                score = score + 1
+
+                b.x = -10000
+                b.y = -10000
+              end
+          end
+      end
 
     for i,z in ipairs(zombies)
       do
@@ -82,6 +97,7 @@ end
 
 function love.draw()
   love.graphics.draw(sprites.background)
+  love.graphics.print("Bombs: " .. bombCount)
 
   if gameState == 1
     then
@@ -95,8 +111,6 @@ function love.draw()
   drawBomb()
   drawZombie()
   drawBullet()
-
-  love.graphics.print(bombCount)
 
 end
 
@@ -142,6 +156,14 @@ function love.mousepressed(x, y, b, istouch)
     end
 end
 
+function love.keypressed(key, scancode, isrepeat, dt)
+  if key == "z" and gameState == 2 and bombCount > 0
+    then
+      spawnBomb()
+      bombCount = bombCount - 1
+    end
+end
+
 function playerMouseAngle()
   return math.atan2(love.mouse.getY() - player.y, love.mouse.getX() - player.x)
 end
@@ -152,12 +174,4 @@ end
 
 function distance(x1, y1, x2, y2)
   return math.sqrt( (x2 - x1)^2 + (y2 - y1)^2)
-end
-
-function love.keypressed(key, scancode, isrepeat, dt)
-  if key == "z" and gameState == 2 and bombCount > 0
-    then
-      spawnBomb()
-      bombCount = bombCount - 1
-    end
 end
