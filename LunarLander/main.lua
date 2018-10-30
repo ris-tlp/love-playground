@@ -12,15 +12,21 @@ function love.load()
 end
 
 
+
 function love.update(dt)
   playerMovement(dt)
 end
 
 
+
 function love.draw()
   love.graphics.draw(sprites.background, 0, 0)
   love.graphics.draw(sprites.lander, lander.x, lander.y)
+  love.graphics.printf("Fuel: " .. lander.fuel, 0, 0, 80, "center")
+  if isExploded() then love.graphics.draw(sprites.exploded, lander.x, lander.y) end
 end
+
+
 
 function playerMovement(dt)
   if love.keyboard.isDown("s") and lander.y < love.graphics.getHeight()
